@@ -6,6 +6,7 @@ import re
 import os
 import io
 import zipfile
+import pytesseract
 from PIL import Image
 
 # Initialize OCR (Cache it so it doesn't reload every time)
@@ -16,19 +17,10 @@ def load_ocr():
 reader = load_ocr()
 
 def extract_text(file, extension):
-    text = ""
-    if extension == 'pdf':
-        with pdfplumber.open(file) as pdf:
-            text = " ".join([page.extract_text() for page in pdf.pages if page.extract_text()])
+    # ... (rest of code)
     elif extension in ['jpg', 'png', 'jpeg']:
         image = Image.open(file)
-        # Convert image to bytes for EasyOCR
-        img_byte_arr = io.BytesIO()
-        image.save(img_byte_arr, format='PNG')
-        text = " ".join(reader.readtext(img_byte_arr.getvalue(), detail=0))
-    elif extension in ['xlsx', 'xls']:
-        df = pd.read_excel(file)
-        text = df.to_string()
+        text = pytesseract.image_to_string(image)
     return text
 
 def parse_metadata(text):
