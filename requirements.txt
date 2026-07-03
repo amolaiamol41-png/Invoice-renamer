@@ -3,5 +3,4 @@ pdfplumber
 pandas
 openpyxl
 pillow
-opencv-python-headless
-easyocr
+pytesseract
